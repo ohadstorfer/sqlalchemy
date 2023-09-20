@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Books App</title>
+</head>
+<body>
+    <h1>Welcome to My Books App</h1>
+
+    <h2>Books</h2>
+    <button onclick="getBooks()">Get Books</button>
+    <ul id="booksList"></ul>
+
+    <h3>Create a New Book</h3>
+    <form onsubmit="createBook(event)">
+        <label for="bookTitle">Title:</label>
+        <input type="text" id="bookTitle" required>
+        <label for="bookAuthor">Author:</label>
+        <input type="text" id="bookAuthor" required>
+        <button type="submit">Create Book</button>
+    </form>
+
+    <h3>Update a Book</h3>
+    <form onsubmit="updateBook(event)">
+        <label for="updateBookId">Book ID:</label>
+        <input type="number" id="updateBookId" required>
+        <label for="updateBookTitle">New Title:</label>
+        <input type="text" id="updateBookTitle" required>
+        <label for="updateBookAuthor">New Author:</label>
+        <input type="text" id="updateBookAuthor" required>
+        <button type="submit">Update Book</button>
+    </form>
+
+    <h3>Delete a Book</h3>
+    <form onsubmit="deleteBook(event)">
+        <label for="deleteBookId">Book ID:</label>
+        <input type="number" id="deleteBookId" required>
+        <button type="submit">Delete Book</button>
+    </form>
+
+    <h2>Authors</h2>
+    <button onclick="getAuthors()">Get Authors</button>
+    <ul id="authorsList"></ul>
+
+    <h3>Create a New Author</h3>
+    <form onsubmit="createAuthor(event)">
+        <label for="authorName">Name:</label>
+        <input type="text" id="authorName" required>
+        <button type="submit">Create Author</button>
+    </form>
+
+    <h3>Update an Author</h3>
+    <form onsubmit="updateAuthor(event)">
+        <label for="updateAuthorId">Author ID:</label>
+        <input type="number" id="updateAuthorId" required>
+        <label for="updateAuthorName">New Name:</label>
+        <input type="text" id="updateAuthorName" required>
+        <button type="submit">Update Author</button>
+    </form>
+
+    <h3>Delete an Author</h3>
+    <form onsubmit="deleteAuthor(event)">
+        <label for="deleteAuthorId">Author ID:</label>
+        <input type="number" id="deleteAuthorId" required>
+        <button type="submit">Delete Author</button>
+    </form>
+
+    <script>
+        // Define CRUD operations using JavaScript and fetch API
+        function createBook(event) {
+            event.preventDefault();
+            const title = document.getElementById('bookTitle').value;
+            const author = document.getElementById('bookAuthor').value;
+            fetch('/books', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title, author })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Add similar functions for updateBook, deleteBook, createAuthor, updateAuthor, deleteAuthor
+
+        // Function to fetch and display books
+        function getBooks() {
+            fetch('/books')
+                .then(response => response.json())
+                .then(data => {
+                    const booksList = document.getElementById('booksList');
+                    booksList.innerHTML = '';
+                    data.books.forEach(book => {
+                        const li = document.createElement('li');
+                        li.textContent = `${book.title} by ${book.author}`;
+                        booksList.appendChild(li);
+                    });
+                });
+        }
+
+        // Add similar function for getAuthors
+
+    </script>
+</body>
+</html>
